@@ -21,19 +21,16 @@ passport.use(new GoogleStrategy({
   clientSecret: keys.googleClientSecret,
   callbackURL: 'https://frozen-springs-24316.herokuapp.com/auth/google/callback'
 },
-(accessToken, refreshToken, profile, done) => {
-  User.findOne({ googleId: profile.id }).
-    then((existingUser) => {
-      if (existingUser) {
+async (accessToken, refreshToken, profile, done) => {
+  const existingUser = await User.findOne({ googleId: profile.id })
+
+  if (existingUser) {
       //we already have an user with the same ID
-        done(null, existingUser);
-    } else {
+    return done(null, existingUser);
+  }
       //we dont have
-        new User({googleId: profile.id})
-          .save()
-          .then(user => done(null, user));
-    }
-  });
+    const user = await new User({ googleId: profile.id }).save()
+    done(null, user);
   }
 )
 );
