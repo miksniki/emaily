@@ -28,7 +28,7 @@ class Mailer extends helper.Mail {
     const clickTracking = new helper.ClickTracking(true, true);
 
     trackingSettings.setClickTracking(clickTracking);
-    this.addTrackingSettings(trackSettings);
+    this.addTrackingSettings(trackingSettings);
   }
 
   addRecipients() {
